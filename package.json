@@ -28,7 +28,8 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "express-handlebars": "^5.2.1"
+    "express-handlebars": "^5.2.1",
+    "mongoose": "^5.12.0"
   },
   "devDependencies": {
     "lint-staged": "^10.5.4",
