@@ -1,10 +1,10 @@
 const Course = require('../models/Course')
-const { mongooseToObject } = require('../../util/mongoose')
+const { multipleMongoseToObject } = require('../../util/mongoose')
 
 
 class SiteController {
     // [GET] /
-    // thêm .lean() sau .find() . Khi dùng lean()
+    // thêm .lean() sau .find({}) . Khi dùng lean()
     // thì mongoose sẽ không tạo đối tượng mongoose document mà trả về object thuần
     index(req, res, next) {
         Course.find({}).lean()
