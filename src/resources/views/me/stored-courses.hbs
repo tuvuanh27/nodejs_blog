@@ -1,12 +1,30 @@
 <div class="mt-4">
     <div>
       <h2>My courses</h2>
-      <a href="/me/trash/courses">Thùng rác</a>
+      <a href="/me/trash/courses">Thùng rác ({{deletedCount}})</a>
+
+      <div class="mt-4 d-flex align-items-center">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="checkbox-all" checked>
+          <label class="form-check-label" for="checkbox-all">
+            Selected All
+          </label>
+        </div>
+
+        <select class="form-select-sm ml-2 mr-2" aria-label="Default select example">
+          <option selected>--- Chọn hành động ---</option>
+          <option value="delete">Delete</option>
+        </select>
+
+        <button class="btn btn-primary disabled ">
+          Thực hiện
+        </button>
+      </div>
     </div>
     <table class="table mt-4">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col" colspan="2">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Level</th>
                 <th scope="col">Time create</th>
@@ -16,6 +34,11 @@
         <tbody>
             {{#each courses}}
             <tr>
+                <td>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}"  checked>
+                  </div>
+                </td>
                 <th scope="row">{{sum @index 1}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.level}}</td>
@@ -60,21 +83,38 @@
 <form id="delete-course-form" action ="" method="POST"></form>
 
 <script>
-    var courseID
-    var deleteForm = document.forms['delete-course-form']
-    console.log(deleteForm)
-    var deleteCourseModal = document.getElementById('delete-course-modal')
-    deleteCourseModal.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget
-    courseID = button.getAttribute('data-id')
-    
+    document.addEventListener( 'DOMContentLoaded', function () {
+      var courseID
+      var deleteForm = document.forms['delete-course-form']
+      var deleteCourseModal = document.getElementById('delete-course-modal')
+      var checkboxAll = $('#checkbox-all')
+      var courseItemCheckbox = $('input[name="courseIds[]"]')
 
-    var btnDeleteCourse = document.querySelector('#btn-delete-course');
-    console.log(btnDeleteCourse)
+      deleteCourseModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget
+        courseID = button.getAttribute('data-id')
+        
 
-    btnDeleteCourse.onclick = () => {
-        deleteForm.action = '/courses/' + courseID + '?_method=DELETE'
-        deleteForm.submit()
-    }
-})
+        var btnDeleteCourse = document.querySelector('#btn-delete-course');
+
+        btnDeleteCourse.onclick = () => {
+            deleteForm.action = '/courses/' + courseID + '?_method=DELETE'
+            deleteForm.submit()
+        }
+      })
+         
+      // checkbox all change   
+      checkboxAll.change(function() {
+        var isCheckedAll = $(this).prop('checked')
+        courseItemCheckbox.prop('checked', isCheckedAll)
+      })
+
+      // course Item Checkbox change
+      courseItemCheckbox.change(function() {
+        
+      })
+
+    })
+      
+
 </script>
